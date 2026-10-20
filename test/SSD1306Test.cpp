@@ -73,7 +73,7 @@ TEST(Commands, SingleNullByteReturnPicoInvalidArgCode){
   LONGS_EQUAL(PICO_ERROR_INVALID_ARG, return_value);
 }
 
-TEST(Commands, InitializationWithNullRerturnsInvalidAddressError){
+TEST(Commands, I2CNullPTRGuardRailForSingleByteCommand){
   SSD1306_Create(0);
   int return_value = SSD1306_sendSingleByteCommand(DISPLAY_CMD_POWER_ON);
   LONGS_EQUAL(PICO_ERROR_INVALID_ADDRESS, return_value);
