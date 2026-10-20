@@ -78,3 +78,19 @@ TEST(Commands, InitializationWithNullRerturnsInvalidAddressError){
   int return_value = SSD1306_sendSingleByteCommand(DISPLAY_CMD_POWER_ON);
   LONGS_EQUAL(PICO_ERROR_INVALID_ADDRESS, return_value);
 }
+
+TEST(Commands, SendCommandWithOneSetting){
+  unsigned char command = DISPLAY_CMD_SET_CONTRAST;
+  unsigned char setting = 0xFF;
+  unsigned char command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, command};
+  unsigned char setting_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, setting};
+
+  record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));
+  record_i2c_write_blocking_expectation(setting_buffer, sizeof(setting_buffer));
+  int return_value =  SSD1306_sendCommandWithOneSetting(command, setting);
+}
+
+TEST(Commands, CommandNullByteReturnPicoInvalidArgCode){
+  int return_value =  SSD1306_sendCommandWithOneSetting(0, 0xff);
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, return_value);
+}

@@ -10,6 +10,7 @@ void SSD1306_Create(i2c_inst_t* new_i2c_pointer){ i2c_istance_ptr = new_i2c_poin
 void SSD1306_Destroy(void){ i2c_istance_ptr = NULL; }
 i2c_inst_t* SSD1306_getDisplayAddress(void){ return i2c_istance_ptr; }
 
+
 int SSD1306_sendSingleByteCommand(const unsigned char command_to_send){
   if (i2c_istance_ptr == NULL)
     return PICO_ERROR_INVALID_ADDRESS;
@@ -19,4 +20,17 @@ int SSD1306_sendSingleByteCommand(const unsigned char command_to_send){
 
   unsigned char command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, command_to_send};
   return i2c_write_blocking(i2c_istance_ptr, DISPLAY_I2C_ADDRESS, command_buffer, 2, false);
+}
+
+
+int SSD1306_sendCommandWithOneSetting(const unsigned char command, const unsigned char setting){
+  if (command == 0 )
+    return PICO_ERROR_INVALID_ARG;
+
+  int bytes_sent = 0;
+
+  bytes_sent += SSD1306_sendSingleByteCommand(command);
+  bytes_sent += SSD1306_sendSingleByteCommand(setting);
+
+  return bytes_sent;
 }
