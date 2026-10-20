@@ -2,12 +2,14 @@ extern "C"
 {
 
 #include "hardware/i2c.h"
+#include "pico/error.h"
 #include "SSD1306.h"
 #include "CppUTestExt/Mocksupport_c.h"
 
 #include "mock_call_implementations.c"
 
 }//ennd extern "C"
+
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/Mocksupport.h"
@@ -23,7 +25,6 @@ TEST_GROUP(SSD1306)
 TEST(SSD1306, Create){
   POINTERS_EQUAL(fake_i2c_address, SSD1306_getDisplayAddress());
 }
-
 
 TEST(SSD1306, Destroy){
   SSD1306_Destroy();
@@ -66,3 +67,14 @@ TEST(Commands, SendSingleByteCommand){
   LONGS_EQUAL(return_value, expected_size);
 }
 
+TEST(Commands, SingleNullByteReturnPicoInvalidArgCode){
+  unsigned char expected_command_buffer[2] = { DISPLAY_CONTROL_CMD_BYTE, 0 };
+  int return_value = SSD1306_sendSingleByteCommand(0);
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, return_value);
+}
+
+TEST(Commands, InitializationWithNullRerturnsInvalidAddressError){
+  SSD1306_Create(0);
+  int return_value = SSD1306_sendSingleByteCommand(DISPLAY_CMD_POWER_ON);
+  LONGS_EQUAL(PICO_ERROR_INVALID_ADDRESS, return_value);
+}

@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include "hardware/i2c.h"
+#include "pico/error.h"
 #include "SSD1306.h"
 
 
@@ -10,10 +11,12 @@ void SSD1306_Destroy(void){ i2c_istance_ptr = NULL; }
 i2c_inst_t* SSD1306_getDisplayAddress(void){ return i2c_istance_ptr; }
 
 int SSD1306_sendSingleByteCommand(const unsigned char command_to_send){
-  unsigned char command_buffer[] = {
-    DISPLAY_CONTROL_CMD_BYTE,
-    command_to_send
-  };
+  if (i2c_istance_ptr == NULL)
+    return PICO_ERROR_INVALID_ADDRESS;
 
+  if (command_to_send == 0)
+    return PICO_ERROR_INVALID_ARG;
+
+  unsigned char command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, command_to_send};
   return i2c_write_blocking(i2c_istance_ptr, DISPLAY_I2C_ADDRESS, command_buffer, 2, false);
 }
