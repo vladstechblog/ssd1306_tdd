@@ -51,6 +51,9 @@ int SSD1306_sendCommandWithTwoSettings(command_t command, setting_t one, setting
 
 
 int SSD1306_sendDataByte(data_t byte_to_send){
+   if(i2c_istance_ptr == NULL)
+     return PICO_ERROR_INVALID_ADDRESS;
+
   int bytes_sent = 0;
 
   unsigned char data_buffer[] = {DISPLAY_CONTROL_DATA_BYTE, byte_to_send};

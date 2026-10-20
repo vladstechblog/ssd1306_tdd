@@ -128,3 +128,10 @@ TEST(Commands, SendDataByte){
   int return_value = SSD1306_sendDataByte(byte_to_send);
   LONGS_EQUAL(expected_data_length, return_value);
 }
+
+TEST(Commands, I2CNullPTRGuardRailForSendingDataByte){
+  SSD1306_Create(0);
+  int return_value = SSD1306_sendDataByte(0xff);
+  LONGS_EQUAL(PICO_ERROR_INVALID_ADDRESS, return_value);
+}
+
