@@ -59,3 +59,12 @@ int SSD1306_sendDataByte(data_t byte_to_send){
   unsigned char data_buffer[] = {DISPLAY_CONTROL_DATA_BYTE, byte_to_send};
   return i2c_write_blocking(i2c_istance_ptr, DISPLAY_I2C_ADDRESS, data_buffer, 2, false);
 }
+
+
+
+int SSD1306_setMultiplexRatio(setting_t ratio_to_set){
+  if (ratio_to_set < DISPLAY_MUX_RATIO_MIN || ratio_to_set > DISPLAY_MUX_RATIO_MAX)
+    return PICO_ERROR_INVALID_ARG;
+
+  return SSD1306_sendCommandWithOneSetting(DISPLAY_CMD_SET_MUX_RATIO, ratio_to_set);
+}

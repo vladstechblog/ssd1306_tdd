@@ -126,3 +126,25 @@ TEST(Commands, I2CNullPTRGuardRailForSendingDataByte){
   int return_value = SSD1306_sendDataByte(0xff);
   LONGS_EQUAL(PICO_ERROR_INVALID_ADDRESS, return_value);
 }
+
+TEST(Commands, SetMultiplexRatio){
+  setting_t expected_ratio = 63;
+  command_t command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, DISPLAY_CMD_SET_MUX_RATIO};
+  setting_t setting_buffer[] = {DISPLAY_CONTROL_CMD_BYTE,expected_ratio};
+  int expected_total_data_sent = sizeof(command_buffer) + sizeof(setting_buffer);
+
+  record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));
+  record_i2c_write_blocking_expectation(setting_buffer, sizeof(setting_buffer));
+  int return_value = SSD1306_setMultiplexRatio(expected_ratio);
+  LONGS_EQUAL(expected_total_data_sent, return_value);
+}
+
+TEST(Commands, SetMutliplexRatioLessThanMiniumReturnsPicoInvalidArgument){
+  int return_value = SSD1306_setMultiplexRatio(DISPLAY_MUX_RATIO_MIN - 1);
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, return_value);
+}
+
+TEST(Commands, SetMutliplexRatioGreaterThanMaximumReturnsPicoInvalidArgument){
+  int return_value = SSD1306_setMultiplexRatio(DISPLAY_MUX_RATIO_MAX + 1);
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, return_value);
+}
