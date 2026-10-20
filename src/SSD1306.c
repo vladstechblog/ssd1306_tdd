@@ -47,3 +47,12 @@ int SSD1306_sendCommandWithTwoSettings(command_t command, setting_t one, setting
 
   return bytes_sent;
 }
+
+
+
+int SSD1306_sendDataByte(data_t byte_to_send){
+  int bytes_sent = 0;
+
+  unsigned char data_buffer[] = {DISPLAY_CONTROL_DATA_BYTE, byte_to_send};
+  return i2c_write_blocking(i2c_istance_ptr, DISPLAY_I2C_ADDRESS, data_buffer, 2, false);
+}

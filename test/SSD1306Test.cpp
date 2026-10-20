@@ -116,6 +116,15 @@ TEST(Commands, SendCommandWithTwoSettings){
 }
 
 TEST(Commands, CommandNullByteReturnPicoInvalidArgCodeForCommandWithTwoSettings){
-  int return_value =  SSD1306_sendCommandWithTwoSettings(0, 0xff, 0xff);
+  int return_value = SSD1306_sendCommandWithTwoSettings(0, 0xff, 0xff);
   LONGS_EQUAL(PICO_ERROR_INVALID_ARG, return_value);
+}
+
+TEST(Commands, SendDataByte){
+  unsigned char byte_to_send = 0xff;
+  unsigned char data_buffer[] = {DISPLAY_CONTROL_DATA_BYTE, byte_to_send};
+  int expected_data_length = sizeof(data_buffer);
+  record_i2c_write_blocking_expectation(data_buffer, expected_data_length);
+  int return_value = SSD1306_sendDataByte(byte_to_send);
+  LONGS_EQUAL(expected_data_length, return_value);
 }
