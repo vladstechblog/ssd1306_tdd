@@ -94,3 +94,25 @@ TEST(Commands, CommandNullByteReturnPicoInvalidArgCode){
   int return_value =  SSD1306_sendCommandWithOneSetting(0, 0xff);
   LONGS_EQUAL(PICO_ERROR_INVALID_ARG, return_value);
 }
+
+TEST(Commands, SendCommandWithTwoSettings){
+  unsigned char command = DISPLAY_CMD_SET_PAGE_ADDR;
+  unsigned char setting_one = 1;
+  unsigned char setting_two = 10;
+
+  unsigned char command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, command};
+  unsigned char setting_one_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, setting_one};
+  unsigned char setting_two_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, setting_two};
+
+  int expected_total_data_sent =
+    sizeof(command_buffer) + sizeof(setting_one_buffer) + sizeof(setting_two_buffer);
+  
+  record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));
+  record_i2c_write_blocking_expectation(setting_one_buffer, sizeof(setting_one_buffer));
+  record_i2c_write_blocking_expectation(setting_two_buffer, sizeof(setting_two_buffer));
+
+  int return_value =  SSD1306_sendCommandWithTwoSettings(command, setting_one, setting_two);
+  LONGS_EQUAL(expected_total_data_sent, return_value); 
+}
+
+

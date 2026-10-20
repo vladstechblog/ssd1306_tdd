@@ -34,3 +34,18 @@ int SSD1306_sendCommandWithOneSetting(const unsigned char command, const unsigne
 
   return bytes_sent;
 }
+
+
+
+int SSD1306_sendCommandWithTwoSettings(
+  const unsigned char command,
+  const unsigned char setting_one, const unsigned char setting_two){
+
+  int bytes_sent = 0;
+
+  bytes_sent += SSD1306_sendSingleByteCommand(command);
+  bytes_sent += SSD1306_sendSingleByteCommand(setting_one);
+  bytes_sent += SSD1306_sendSingleByteCommand(setting_two);
+
+  return bytes_sent;
+}
