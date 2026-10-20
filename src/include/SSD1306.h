@@ -1,6 +1,9 @@
 #ifndef D_SSD1306_H
 #define D_SSD1306_H
 
+#define DISPLAY_HEIGHT 64
+#define DISPLAY_WIDTH 128
+#define DISPLAY_MAX_ROWS (DISPLAY_HEIGHT -1)
 #define DISPLAY_I2C_ADDRESS 0x3C
 #define DISPLAY_CONTROL_CMD_BYTE 0x80
 #define DISPLAY_CONTROL_DATA_BYTE 0xC0
@@ -12,6 +15,7 @@
 #define DISPLAY_CMD_SET_CONTRAST 0x7F
 #define DISPLAY_CMD_SET_PAGE_ADDR 0x22
 #define DISPLAY_CMD_SET_MUX_RATIO 0xA8
+#define DISPLAY_CMD_SET_VERT_OFFSET 0xD3
 
 typedef const unsigned char command_t;
 typedef const unsigned char setting_t;
@@ -26,5 +30,6 @@ int SSD1306_sendCommandWithOneSetting(command_t, setting_t);
 int SSD1306_sendCommandWithTwoSettings(command_t, setting_t, setting_t);
 int SSD1306_sendDataByte(data_t);
 int SSD1306_setMultiplexRatio(setting_t);
+int SSD1306_setVerticalOffset(setting_t);
 
 #endif  /* D_SSD1306_H */

@@ -35,7 +35,6 @@ int SSD1306_sendCommandWithOneSetting(command_t command, setting_t setting){
 }
 
 
-
 int SSD1306_sendCommandWithTwoSettings(command_t command, setting_t one, setting_t two){
   if (command == 0 )
     return PICO_ERROR_INVALID_ARG;
@@ -49,7 +48,6 @@ int SSD1306_sendCommandWithTwoSettings(command_t command, setting_t one, setting
 }
 
 
-
 int SSD1306_sendDataByte(data_t byte_to_send){
    if(i2c_istance_ptr == NULL)
      return PICO_ERROR_INVALID_ADDRESS;
@@ -61,10 +59,17 @@ int SSD1306_sendDataByte(data_t byte_to_send){
 }
 
 
-
 int SSD1306_setMultiplexRatio(setting_t ratio_to_set){
   if (ratio_to_set < DISPLAY_MUX_RATIO_MIN || ratio_to_set > DISPLAY_MUX_RATIO_MAX)
     return PICO_ERROR_INVALID_ARG;
 
   return SSD1306_sendCommandWithOneSetting(DISPLAY_CMD_SET_MUX_RATIO, ratio_to_set);
+}
+
+
+int SSD1306_setVerticalOffset(setting_t offset_value){
+  if(offset_value >=0 && offset_value <= DISPLAY_MAX_ROWS)
+    return SSD1306_sendCommandWithOneSetting(DISPLAY_CMD_SET_VERT_OFFSET, offset_value);
+  
+  return PICO_ERROR_INVALID_ARG;
 }

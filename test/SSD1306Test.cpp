@@ -148,3 +148,23 @@ TEST(Commands, SetMutliplexRatioGreaterThanMaximumReturnsPicoInvalidArgument){
   int return_value = SSD1306_setMultiplexRatio(DISPLAY_MUX_RATIO_MAX + 1);
   LONGS_EQUAL(PICO_ERROR_INVALID_ARG, return_value);
 }
+
+TEST(Commands, SetVerticalOffset){
+  setting_t expected_offset = 1;
+  command_t command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, DISPLAY_CMD_SET_VERT_OFFSET};
+  setting_t setting_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, expected_offset};
+  int expected_total_data_sent = sizeof(command_buffer) + sizeof(setting_buffer);
+
+  record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));
+  record_i2c_write_blocking_expectation(setting_buffer, sizeof(setting_buffer));
+  int return_value = SSD1306_setVerticalOffset(expected_offset);
+  LONGS_EQUAL(expected_total_data_sent, return_value);
+}
+
+TEST(Commands, VerticalOffsetAboveMaximumReturnPicoErrorInvalidArgument){
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setVerticalOffset(DISPLAY_MAX_ROWS + 1));
+}
+
+TEST(Commands, VerticalOffsetBelowMinimumReturnPicoErrorInvalidArgument){
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setVerticalOffset(-1));
+}
