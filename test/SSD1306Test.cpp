@@ -5,17 +5,7 @@ extern "C"
 #include "SSD1306.h"
 #include "CppUTestExt/Mocksupport_c.h"
 
-
-int i2c_write_blocking(i2c_inst_t* i2c, uint8_t addr, const uint8_t* src, size_t len, bool nostop){
-  return mock_c()->actualCall("i2c_write_blocking")
-    ->withPointerParameters("i2c_instance", i2c)
-    ->withUnsignedIntParameters("i2c_addr", addr)
-    ->withMemoryBufferParameter("src_buffer", (unsigned char*)src, len)
-    ->withUnsignedIntParameters("buff_size", len)
-    ->withBoolParameters("nostop", nostop)
-    ->returnValue().value.intValue;
-}
-
+#include "mock_call_implementations.c"
 
 }//ennd extern "C"
 
@@ -24,7 +14,6 @@ int i2c_write_blocking(i2c_inst_t* i2c, uint8_t addr, const uint8_t* src, size_t
 
 TEST_GROUP(SSD1306)
 {
-  i2c_inst_t* fake_i2c_address = (i2c_inst_t*) 0x11223344;
   void setup(){
     SSD1306_Create(fake_i2c_address);
   }
@@ -43,14 +32,24 @@ TEST(SSD1306, Destroy){
 
 TEST_GROUP(Commands)
 {
-  i2c_inst_t* fake_i2c_address = (i2c_inst_t*) 0x11223344;
   void setup(){
     SSD1306_Create(fake_i2c_address);
   }
   void teardown(){
     SSD1306_Destroy();
+    mock().checkExpectations();
     mock().clear();
   }
+
+  void record_i2c_write_blocking_expectation(const unsigned char* data, size_t length){
+    mock().expectOneCall("i2c_write_blocking")
+      .withPointerParameter("i2c_instance", fake_i2c_address)
+      .withUnsignedIntParameter("i2c_addr", DISPLAY_I2C_ADDRESS)
+      .withMemoryBufferParameter("src_buffer", data, length)
+      .withUnsignedIntParameter("buff_size", length)
+      .withBoolParameter("nostop", false)
+      .andReturnValue(length);
+   }
 };
 
 TEST(Commands, SendSingleByteCommand){
@@ -60,17 +59,10 @@ TEST(Commands, SendSingleByteCommand){
   };
 
   unsigned int i2c_addr = DISPLAY_I2C_ADDRESS;
-  unsigned int buff_size = sizeof(expected_command_buffer);
-  bool nostop = false;
+  size_t expected_size = sizeof(expected_command_buffer);
 
-  mock().expectOneCall("i2c_write_blocking")
-    .withPointerParameter("i2c_instance", fake_i2c_address)
-    .withUnsignedIntParameter("i2c_addr", i2c_addr)
-    .withMemoryBufferParameter("src_buffer", (const unsigned char*)expected_command_buffer, buff_size)
-    .withUnsignedIntParameter("buff_size", buff_size)
-    .withBoolParameter("nostop", nostop)
-    .andReturnValue(buff_size);
-
-  SSD1306_sendSingleByteCommand(DISPLAY_CMD_POWER_ON);
-  mock().checkExpectations();
+  record_i2c_write_blocking_expectation(expected_command_buffer, expected_size);
+  int return_value = SSD1306_sendSingleByteCommand(DISPLAY_CMD_POWER_ON);
+  LONGS_EQUAL(return_value, expected_size);
 }
+
