@@ -115,4 +115,7 @@ TEST(Commands, SendCommandWithTwoSettings){
   LONGS_EQUAL(expected_total_data_sent, return_value); 
 }
 
-
+TEST(Commands, CommandNullByteReturnPicoInvalidArgCodeForCommandWithTwoSettings){
+  int return_value =  SSD1306_sendCommandWithTwoSettings(0, 0xff, 0xff);
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, return_value);
+}

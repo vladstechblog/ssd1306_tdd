@@ -28,7 +28,6 @@ int SSD1306_sendCommandWithOneSetting(command_t command, setting_t setting){
     return PICO_ERROR_INVALID_ARG;
 
   int bytes_sent = 0;
-
   bytes_sent += SSD1306_sendSingleByteCommand(command);
   bytes_sent += SSD1306_sendSingleByteCommand(setting);
 
@@ -38,8 +37,10 @@ int SSD1306_sendCommandWithOneSetting(command_t command, setting_t setting){
 
 
 int SSD1306_sendCommandWithTwoSettings(command_t command, setting_t one, setting_t two){
-  int bytes_sent = 0;
+  if (command == 0 )
+    return PICO_ERROR_INVALID_ARG;
 
+  int bytes_sent = 0;
   bytes_sent += SSD1306_sendSingleByteCommand(command);
   bytes_sent += SSD1306_sendSingleByteCommand(one);
   bytes_sent += SSD1306_sendSingleByteCommand(two);
