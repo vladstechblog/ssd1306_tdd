@@ -88,3 +88,11 @@ int SSD1306_invertColumnMapping(bool invert_columns){
 
   return SSD1306_sendSingleByteCommand(invert_columns_command);
 }
+
+int SSD1306_invertRowMapping(bool invert_rows){
+  unsigned char invert_rows_command= DISPLAY_CMD_SET_COM_OUTPUT_DIR; 
+  if(invert_rows)
+    invert_rows_command |= DISPLAY_SETTING_FLIP_ROWS;
+
+  return SSD1306_sendSingleByteCommand(invert_rows_command);
+}
