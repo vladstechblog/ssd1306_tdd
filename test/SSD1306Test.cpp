@@ -215,7 +215,7 @@ TEST(Commands, DisableIvertRows){
 }
 
 TEST(Commands, SetSequenctialPinConfig){
-  setting_t pin_setting = DISPLAY_SETTING_COM_PIN_CONFIG_CLEAR;
+  setting_t pin_setting = DISPLAY_SETTING_COM_PIN_CONFIG_SEQ;
   int expected = expectCommandAndOneSetting(DISPLAY_CMD_CONFIGURE_COM_PINS, pin_setting);
   LONGS_EQUAL(expected, SSD1306_configureComPin(pin_setting));
 }

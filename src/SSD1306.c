@@ -103,7 +103,7 @@ static int send_pin_config(setting_t valid_pin_setting){
 
 int SSD1306_configureComPin(setting_t pin_setting){
   switch(pin_setting){
-    case DISPLAY_SETTING_COM_PIN_CONFIG_CLEAR:
+    case DISPLAY_SETTING_COM_PIN_CONFIG_SEQ:
       return send_pin_config(pin_setting);
     case DISPLAY_SETTING_COM_PIN_CONFIG_ALT:
       return send_pin_config(pin_setting);
