@@ -49,6 +49,12 @@ TEST_GROUP(Commands){
     clear_i2c_command_bytes(setting_two_buffer);
   }
 
+  int expectCommandWithoutSettings(command_t command){ 
+    command_buffer[1] = command;
+    record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));
+    return sizeof(command_buffer);
+  }
+
   int expectCommandAndOneSetting(command_t command, setting_t setting){ 
     command_buffer[1] = command;
     setting_one_buffer[1] = setting;
@@ -80,17 +86,9 @@ TEST_GROUP(Commands){
 };
 
 TEST(Commands, SendSingleByteCommand){
-  unsigned char expected_command_buffer[2] = {
-    DISPLAY_CONTROL_CMD_BYTE,
-    DISPLAY_CMD_POWER_ON
-  };
-
-  unsigned int i2c_addr = DISPLAY_I2C_ADDRESS;
-  size_t expected_size = sizeof(expected_command_buffer);
-
-  record_i2c_write_blocking_expectation(expected_command_buffer, expected_size);
-  int return_value = SSD1306_sendSingleByteCommand(DISPLAY_CMD_POWER_ON);
-  LONGS_EQUAL(return_value, expected_size);
+  command_t command = DISPLAY_CMD_POWER_ON;
+  int expected = expectCommandWithoutSettings(command);
+  LONGS_EQUAL(expected, SSD1306_sendSingleByteCommand(command));
 }
 
 TEST(Commands, SingleNullByteReturnPicoInvalidArgCode){
