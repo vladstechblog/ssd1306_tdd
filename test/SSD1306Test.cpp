@@ -10,10 +10,11 @@ extern "C"
 
 }//ennd extern "C"
 
-
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/Mocksupport.h"
 #include "util_record_expectations.c"
+
+#define I2C_CHUNK_SIZE 2
 
 TEST_GROUP(SSD1306)
 {
@@ -32,17 +33,40 @@ TEST(SSD1306, Destroy){
   POINTERS_EQUAL(NULL, SSD1306_getDisplayAddress());
 }
 
-TEST_GROUP(Commands)
-{
+static void clear_i2c_command_bytes(command_t i2c_chunk[I2C_CHUNK_SIZE]){
+  i2c_chunk[0] = DISPLAY_CONTROL_CMD_BYTE;
+  i2c_chunk[1] = 0;
+}
+
+TEST_GROUP(Commands){
+  command_t command_buffer[I2C_CHUNK_SIZE]     = {DISPLAY_CONTROL_CMD_BYTE, 0x0};
+  setting_t setting_one_buffer[I2C_CHUNK_SIZE] = {DISPLAY_CONTROL_CMD_BYTE, 0x0};
+  setting_t setting_two_buffer[I2C_CHUNK_SIZE] = {DISPLAY_CONTROL_CMD_BYTE, 0x0};
+
+  void clear_buffers(){
+    clear_i2c_command_bytes(command_buffer);
+    clear_i2c_command_bytes(setting_one_buffer);
+    clear_i2c_command_bytes(setting_two_buffer);
+  }
+
+  int expectCommandAndOneSetting(command_t command, setting_t setting){ 
+    command_buffer[1] = command;
+    setting_one_buffer[1] = setting;
+    record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));
+    record_i2c_write_blocking_expectation(setting_one_buffer, sizeof(setting_one_buffer));
+    return sizeof(command_buffer) + sizeof(setting_one_buffer);
+  }
+
   void setup(){
+    clear_buffers();
     SSD1306_Create(fake_i2c_address);
   }
+
   void teardown(){
     SSD1306_Destroy();
     mock().checkExpectations();
     mock().clear();
   }
-
 };
 
 TEST(Commands, SendSingleByteCommand){
@@ -74,12 +98,8 @@ TEST(Commands, I2CNullPTRGuardRailForSingleByteCommand){
 TEST(Commands, SendCommandWithOneSetting){
   command_t command = DISPLAY_CMD_SET_CONTRAST;
   setting_t setting = 0xFF;
-  command_t command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, command};
-  setting_t setting_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, setting};
-
-  record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));
-  record_i2c_write_blocking_expectation(setting_buffer, sizeof(setting_buffer));
-  int return_value =  SSD1306_sendCommandWithOneSetting(command, setting);
+  int expected = expectCommandAndOneSetting(command, setting);
+  LONGS_EQUAL(expected, SSD1306_sendCommandWithOneSetting(command, setting));
 }
 
 TEST(Commands, CommandNullByteReturnPicoInvalidArgCode){
@@ -129,14 +149,8 @@ TEST(Commands, I2CNullPTRGuardRailForSendingDataByte){
 
 TEST(Commands, SetMultiplexRatio){
   setting_t expected_ratio = 63;
-  command_t command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, DISPLAY_CMD_SET_MUX_RATIO};
-  setting_t setting_buffer[] = {DISPLAY_CONTROL_CMD_BYTE,expected_ratio};
-  int expected_total_data_sent = sizeof(command_buffer) + sizeof(setting_buffer);
-
-  record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));
-  record_i2c_write_blocking_expectation(setting_buffer, sizeof(setting_buffer));
-  int return_value = SSD1306_setMultiplexRatio(expected_ratio);
-  LONGS_EQUAL(expected_total_data_sent, return_value);
+  int expected = expectCommandAndOneSetting(DISPLAY_CMD_SET_MUX_RATIO, expected_ratio);
+  LONGS_EQUAL(expected, SSD1306_setMultiplexRatio(expected_ratio));
 }
 
 TEST(Commands, SetMutliplexRatioLessThanMiniumReturnsPicoInvalidArgument){
@@ -151,14 +165,8 @@ TEST(Commands, SetMutliplexRatioGreaterThanMaximumReturnsPicoInvalidArgument){
 
 TEST(Commands, SetVerticalOffset){
   setting_t expected_offset = 1;
-  command_t command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, DISPLAY_CMD_SET_VERT_OFFSET};
-  setting_t setting_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, expected_offset};
-  int expected_total_data_sent = sizeof(command_buffer) + sizeof(setting_buffer);
-
-  record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));
-  record_i2c_write_blocking_expectation(setting_buffer, sizeof(setting_buffer));
-  int return_value = SSD1306_setVerticalOffset(expected_offset);
-  LONGS_EQUAL(expected_total_data_sent, return_value);
+  int expected = expectCommandAndOneSetting(DISPLAY_CMD_SET_VERT_OFFSET,expected_offset);
+   LONGS_EQUAL(expected, SSD1306_setVerticalOffset(expected_offset));
 }
 
 TEST(Commands, VerticalOffsetAboveMaximumReturnPicoErrorInvalidArgument){
@@ -217,10 +225,6 @@ TEST(Commands, DisableIvertRows){
 
 TEST(Commands, SetClearPinConfig){
   setting_t pin_setting = DISPLAY_SETTING_COM_PIN_CONFIG_CLEAR;
-  command_t command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, DISPLAY_CMD_CONFIGURE_COM_PINS};
-  setting_t setting_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, pin_setting};
-  record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));
-  record_i2c_write_blocking_expectation(setting_buffer, sizeof(setting_buffer));
-  int expected_total_data_sent = sizeof(command_buffer) + sizeof(setting_buffer);
-  LONGS_EQUAL(expected_total_data_sent, SSD1306_configureComPin(pin_setting));
+  int expected = expectCommandAndOneSetting(DISPLAY_CMD_CONFIGURE_COM_PINS, pin_setting);
+  LONGS_EQUAL(expected, SSD1306_configureComPin(pin_setting));
 }
