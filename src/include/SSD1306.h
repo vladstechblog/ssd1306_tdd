@@ -10,12 +10,14 @@
 
 #define DISPLAY_MUX_RATIO_MIN 15
 #define DISPLAY_MUX_RATIO_MAX 63
+#define DISPLAY_START_LINE_MAX 0x7F //per datasheet
 
 #define DISPLAY_CMD_POWER_ON 0xAF
 #define DISPLAY_CMD_SET_CONTRAST 0x7F
 #define DISPLAY_CMD_SET_PAGE_ADDR 0x22
 #define DISPLAY_CMD_SET_MUX_RATIO 0xA8
 #define DISPLAY_CMD_SET_VERT_OFFSET 0xD3
+#define DISPLAY_CMD_SET_START_LINE 0x40
 
 typedef const unsigned char command_t;
 typedef const unsigned char setting_t;
@@ -31,5 +33,6 @@ int SSD1306_sendCommandWithTwoSettings(command_t, setting_t, setting_t);
 int SSD1306_sendDataByte(data_t);
 int SSD1306_setMultiplexRatio(setting_t);
 int SSD1306_setVerticalOffset(setting_t);
+int SSD1306_setDisplayStartLine(setting_t);
 
 #endif  /* D_SSD1306_H */

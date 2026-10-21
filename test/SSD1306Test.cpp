@@ -168,3 +168,23 @@ TEST(Commands, VerticalOffsetAboveMaximumReturnPicoErrorInvalidArgument){
 TEST(Commands, VerticalOffsetBelowMinimumReturnPicoErrorInvalidArgument){
   LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setVerticalOffset(-1));
 }
+
+TEST(Commands, SetDisplayStartLine){
+  setting_t expected_start_line = 32;
+  command_t command_buffer[] = {
+    DISPLAY_CONTROL_CMD_BYTE,
+    DISPLAY_CMD_SET_START_LINE | expected_start_line
+  };
+  int expected_total_data_sent = sizeof(command_buffer);
+
+  record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));
+  LONGS_EQUAL(expected_total_data_sent, SSD1306_setDisplayStartLine(expected_start_line));
+}
+
+TEST(Commands, StartLineAboveMaximumReturnsPicoErrorInvalidArgument){
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setDisplayStartLine(DISPLAY_HEIGHT));
+}
+
+TEST(Commands, StartLineBelowMinimumReturnsPicoErrorInvalidArgument){
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setDisplayStartLine(-1));
+}

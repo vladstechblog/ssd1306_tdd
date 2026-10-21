@@ -73,3 +73,10 @@ int SSD1306_setVerticalOffset(setting_t offset_value){
   
   return PICO_ERROR_INVALID_ARG;
 }
+
+int SSD1306_setDisplayStartLine(setting_t start_line){
+  if(start_line >=0 && start_line <= DISPLAY_MAX_ROWS)
+    return SSD1306_sendSingleByteCommand(DISPLAY_CMD_SET_START_LINE | start_line); 
+
+  return PICO_ERROR_INVALID_ARG;
+}
