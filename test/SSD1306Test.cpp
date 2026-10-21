@@ -203,13 +203,9 @@ TEST(Commands, DisableIvertColumns){
 }
 
 TEST(Commands, EnableIvertRows){
-  command_t command_buffer[] = {
-    DISPLAY_CONTROL_CMD_BYTE,
-    DISPLAY_CMD_SET_COM_OUTPUT_DIR | DISPLAY_SETTING_FLIP_ROWS
-  };
-
-  record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));
-  LONGS_EQUAL(sizeof(command_buffer), SSD1306_invertRowMapping(true));
+  command_t command = DISPLAY_CMD_SET_COM_OUTPUT_DIR | DISPLAY_SETTING_FLIP_ROWS;
+  int expected = expectCommandWithoutSettings(command);
+  LONGS_EQUAL(expected, SSD1306_invertRowMapping(true));
 }
 
 TEST(Commands, DisableIvertRows){
