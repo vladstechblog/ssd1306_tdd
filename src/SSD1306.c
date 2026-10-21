@@ -115,3 +115,9 @@ int SSD1306_configureComPin(setting_t pin_setting){
       return PICO_ERROR_INVALID_ARG;
   }//end switch
 }
+
+int SSD1306_setContrast(setting_t contrast){
+  if(contrast >= 0 && contrast <= DISPLAY_SETTING_MAX_CONTRAST)
+    return SSD1306_sendCommandWithOneSetting(DISPLAY_CMD_SET_CONTRAST, contrast);
+  return PICO_ERROR_INVALID_ARG;
+}

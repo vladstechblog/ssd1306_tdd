@@ -16,6 +16,7 @@
 #define DISPLAY_SETTING_COM_PIN_CONFIG_SEQ 0x2
 #define DISPLAY_SETTING_COM_PIN_CONFIG_ALT 0x12
 #define DISPLAY_SETTING_COM_PIN_LEFT_RIGHT_REMAP_ON 0x22
+#define DISPLAY_SETTING_MAX_CONTRAST 0x7F
 
 #define DISPLAY_CMD_POWER_ON 0xAF
 #define DISPLAY_CMD_SET_CONTRAST 0x7F
@@ -45,5 +46,6 @@ int SSD1306_setDisplayStartLine(setting_t);
 int SSD1306_invertColumnMapping(bool);
 int SSD1306_invertRowMapping(bool);
 int SSD1306_configureComPin(setting_t);
+int SSD1306_setContrast(setting_t);
 
 #endif  /* D_SSD1306_H */

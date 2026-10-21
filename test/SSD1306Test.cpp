@@ -243,3 +243,19 @@ TEST(Commands, InvalidPinConfigReturnsPicoErrorInvaidArg){
   setting_t pin_setting = 0b110;
   LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_configureComPin(pin_setting));
 }
+
+TEST(Commands, SetContrast){
+  setting_t contrast = DISPLAY_SETTING_MAX_CONTRAST;
+  int expected = expectCommandAndOneSetting(DISPLAY_CMD_SET_CONTRAST, contrast);
+  LONGS_EQUAL(expected, SSD1306_setContrast(contrast));
+}
+
+TEST(Commands, ContrastGreaterThanMaxReturnsPicoErrorInvalidArg){
+  setting_t contrast = DISPLAY_SETTING_MAX_CONTRAST+1;
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setContrast(contrast));
+}
+
+TEST(Commands, NegativeContrastThanMaxReturnsPicoErrorInvalidArg){
+  setting_t contrast = -1; 
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setContrast(contrast));
+}
