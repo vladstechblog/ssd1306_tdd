@@ -72,10 +72,10 @@ TEST(Commands, I2CNullPTRGuardRailForSingleByteCommand){
 }
 
 TEST(Commands, SendCommandWithOneSetting){
-  unsigned char command = DISPLAY_CMD_SET_CONTRAST;
-  unsigned char setting = 0xFF;
-  unsigned char command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, command};
-  unsigned char setting_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, setting};
+  command_t command = DISPLAY_CMD_SET_CONTRAST;
+  setting_t setting = 0xFF;
+  command_t command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, command};
+  setting_t setting_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, setting};
 
   record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));
   record_i2c_write_blocking_expectation(setting_buffer, sizeof(setting_buffer));
@@ -88,13 +88,13 @@ TEST(Commands, CommandNullByteReturnPicoInvalidArgCode){
 }
 
 TEST(Commands, SendCommandWithTwoSettings){
-  unsigned char command = DISPLAY_CMD_SET_PAGE_ADDR;
-  unsigned char setting_one = 1;
-  unsigned char setting_two = 10;
+  command_t command = DISPLAY_CMD_SET_PAGE_ADDR;
+  setting_t setting_one = 1;
+  setting_t setting_two = 10;
 
-  unsigned char command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, command};
-  unsigned char setting_one_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, setting_one};
-  unsigned char setting_two_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, setting_two};
+  command_t command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, command};
+  setting_t setting_one_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, setting_one};
+  setting_t setting_two_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, setting_two};
 
   int expected_total_data_sent =
     sizeof(command_buffer) + sizeof(setting_one_buffer) + sizeof(setting_two_buffer);
@@ -113,8 +113,8 @@ TEST(Commands, CommandNullByteReturnPicoInvalidArgCodeForCommandWithTwoSettings)
 }
 
 TEST(Commands, SendDataByte){
-  unsigned char byte_to_send = 0xff;
-  unsigned char data_buffer[] = {DISPLAY_CONTROL_DATA_BYTE, byte_to_send};
+  data_t byte_to_send = 0xff;
+  data_t data_buffer[] = {DISPLAY_CONTROL_DATA_BYTE, byte_to_send};
   int expected_data_length = sizeof(data_buffer);
   record_i2c_write_blocking_expectation(data_buffer, expected_data_length);
   int return_value = SSD1306_sendDataByte(byte_to_send);
@@ -171,10 +171,8 @@ TEST(Commands, VerticalOffsetBelowMinimumReturnPicoErrorInvalidArgument){
 
 TEST(Commands, SetDisplayStartLine){
   setting_t expected_start_line = 32;
-  command_t command_buffer[] = {
-    DISPLAY_CONTROL_CMD_BYTE,
-    DISPLAY_CMD_SET_START_LINE | expected_start_line
-  };
+  setting_t test_setting = DISPLAY_CMD_SET_START_LINE | expected_start_line;
+  command_t command_buffer[] = { DISPLAY_CONTROL_CMD_BYTE, test_setting};
   int expected_total_data_sent = sizeof(command_buffer);
 
   record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));

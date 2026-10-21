@@ -27,9 +27,9 @@
 #define DISPLAY_CMD_SET_COM_OUTPUT_DIR 0xC0
 #define DISPLAY_CMD_CONFIGURE_COM_PINS 0xDA
 
-typedef const unsigned char command_t;
-typedef const unsigned char setting_t;
-typedef const unsigned char data_t;
+typedef unsigned char command_t;
+typedef unsigned char setting_t;
+typedef unsigned char data_t;
 
 
 void SSD1306_Create(i2c_inst_t*);
