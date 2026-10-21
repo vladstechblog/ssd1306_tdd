@@ -137,3 +137,10 @@ int SSD1306_invertDisplayPixels(bool invertPixels){
 
   return SSD1306_sendSingleByteCommand(command);
 }
+
+int SSD1306_setDefaultFreqAndDividerRatio(void){
+  return SSD1306_sendCommandWithOneSetting(
+    DISPLAY_CMD_CONFIGURE_OSCILLATOR,
+    DISPLAY_SETTING_DEFAULT_FREQ_AND_DIVIDER_RATIO
+  );
+}

@@ -284,3 +284,9 @@ TEST(Commands, InvertDisplayPixels){
   LONGS_EQUAL(expected, SSD1306_invertDisplayPixels(true));
 }
 
+TEST(Commands, SetDefaultOscillatorFrequencyAndDividerRatio){
+  command_t command = DISPLAY_CMD_CONFIGURE_OSCILLATOR;
+  setting_t setting = DISPLAY_SETTING_DEFAULT_FREQ_AND_DIVIDER_RATIO;
+  int expected = expectCommandAndOneSetting(command, setting);
+  LONGS_EQUAL(expected, SSD1306_setDefaultFreqAndDividerRatio());
+}
