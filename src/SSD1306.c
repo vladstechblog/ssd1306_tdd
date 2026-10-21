@@ -96,3 +96,12 @@ int SSD1306_invertRowMapping(bool invert_rows){
 
   return SSD1306_sendSingleByteCommand(invert_rows_command);
 }
+
+int SSD1306_configureComPin(setting_t pin_setting){
+  switch(pin_setting){
+    case DISPLAY_SETTING_COM_PIN_CONFIG_CLEAR:
+      return SSD1306_sendCommandWithOneSetting(DISPLAY_CMD_CONFIGURE_COM_PINS, pin_setting);
+    default:
+      return PICO_ERROR_INVALID_ARG;
+  }//end switch
+}

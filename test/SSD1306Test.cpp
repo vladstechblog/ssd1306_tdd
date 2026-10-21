@@ -217,3 +217,12 @@ TEST(Commands, DisableIvertRows){
   LONGS_EQUAL(sizeof(command_buffer), SSD1306_invertRowMapping(false));
 }
 
+TEST(Commands, SetClearPinConfig){
+  setting_t pin_setting = DISPLAY_SETTING_COM_PIN_CONFIG_CLEAR;
+  command_t command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, DISPLAY_CMD_CONFIGURE_COM_PINS};
+  setting_t setting_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, pin_setting};
+  record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));
+  record_i2c_write_blocking_expectation(setting_buffer, sizeof(setting_buffer));
+  int expected_total_data_sent = sizeof(command_buffer) + sizeof(setting_buffer);
+  LONGS_EQUAL(expected_total_data_sent, SSD1306_configureComPin(pin_setting));
+}

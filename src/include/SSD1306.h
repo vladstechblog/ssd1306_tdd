@@ -13,6 +13,9 @@
 #define DISPLAY_START_LINE_MAX 0x7F //per datasheet
 
 #define DISPLAY_SETTING_FLIP_ROWS 0x8
+#define DISPLAY_SETTING_COM_PIN_CONFIG_CLEAR 0x2
+#define DISPLAY_SETTING_COM_PIN_CONFIG_ALT 0x12
+#define DISPLAY_SETTING_COM_PIN_LEFT_RIGHT_REMAP_ON 0x22
 
 #define DISPLAY_CMD_POWER_ON 0xAF
 #define DISPLAY_CMD_SET_CONTRAST 0x7F
@@ -22,6 +25,7 @@
 #define DISPLAY_CMD_SET_START_LINE 0x40
 #define DISPLAY_CMD_SET_SEGMENT_REMAP 0xA0
 #define DISPLAY_CMD_SET_COM_OUTPUT_DIR 0xC0
+#define DISPLAY_CMD_CONFIGURE_COM_PINS 0xDA
 
 typedef const unsigned char command_t;
 typedef const unsigned char setting_t;
@@ -40,5 +44,6 @@ int SSD1306_setVerticalOffset(setting_t);
 int SSD1306_setDisplayStartLine(setting_t);
 int SSD1306_invertColumnMapping(bool);
 int SSD1306_invertRowMapping(bool);
+int SSD1306_configureComPin(setting_t);
 
 #endif  /* D_SSD1306_H */
