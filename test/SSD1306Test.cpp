@@ -193,15 +193,13 @@ TEST(Commands, StartLineBelowMinimumReturnsPicoErrorInvalidArgument){
 }
 
 TEST(Commands, EnbleIvertColumns){
-  command_t command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, DISPLAY_CMD_SET_SEGMENT_REMAP | 1};
-  record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));
-  LONGS_EQUAL(sizeof(command_buffer), SSD1306_invertColumnMapping(true));
+  int expected = expectCommandWithoutSettings(DISPLAY_CMD_SET_SEGMENT_REMAP | 1);
+  LONGS_EQUAL(expected, SSD1306_invertColumnMapping(true));
 }
 
 TEST(Commands, DisableIvertColumns){
-  command_t command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, DISPLAY_CMD_SET_SEGMENT_REMAP};
-  record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));
-  LONGS_EQUAL(sizeof(command_buffer), SSD1306_invertColumnMapping(false));
+  int expected = expectCommandWithoutSettings(DISPLAY_CMD_SET_SEGMENT_REMAP);
+  LONGS_EQUAL(expected, SSD1306_invertColumnMapping(false));
 }
 
 TEST(Commands, EnableIvertRows){
@@ -225,3 +223,6 @@ TEST(Commands, SetClearPinConfig){
   int expected = expectCommandAndOneSetting(DISPLAY_CMD_CONFIGURE_COM_PINS, pin_setting);
   LONGS_EQUAL(expected, SSD1306_configureComPin(pin_setting));
 }
+
+
+
