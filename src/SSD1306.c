@@ -105,6 +105,12 @@ int SSD1306_configureComPin(setting_t pin_setting){
   switch(pin_setting){
     case DISPLAY_SETTING_COM_PIN_CONFIG_CLEAR:
       return send_pin_config(pin_setting);
+    case DISPLAY_SETTING_COM_PIN_CONFIG_ALT:
+      return send_pin_config(pin_setting);
+    case DISPLAY_SETTING_COM_PIN_CONFIG_ALT | DISPLAY_SETTING_COM_PIN_LEFT_RIGHT_REMAP_ON:
+      return send_pin_config(pin_setting);
+    case DISPLAY_SETTING_COM_PIN_LEFT_RIGHT_REMAP_ON:
+      return send_pin_config(pin_setting);
     default:
       return PICO_ERROR_INVALID_ARG;
   }//end switch

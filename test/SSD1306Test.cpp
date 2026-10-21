@@ -214,11 +214,32 @@ TEST(Commands, DisableIvertRows){
   LONGS_EQUAL(sizeof(command_buffer), SSD1306_invertRowMapping(false));
 }
 
-TEST(Commands, SetClearPinConfig){
+TEST(Commands, SetSequenctialPinConfig){
   setting_t pin_setting = DISPLAY_SETTING_COM_PIN_CONFIG_CLEAR;
   int expected = expectCommandAndOneSetting(DISPLAY_CMD_CONFIGURE_COM_PINS, pin_setting);
   LONGS_EQUAL(expected, SSD1306_configureComPin(pin_setting));
 }
 
+TEST(Commands, SetAltPinConfig){
+  setting_t pin_setting = DISPLAY_SETTING_COM_PIN_CONFIG_ALT;
+  int expected = expectCommandAndOneSetting(DISPLAY_CMD_CONFIGURE_COM_PINS, pin_setting);
+  LONGS_EQUAL(expected, SSD1306_configureComPin(pin_setting));
+}
 
+TEST(Commands, SetLeftRightRemapping){
+  setting_t pin_setting = DISPLAY_SETTING_COM_PIN_LEFT_RIGHT_REMAP_ON;
+  int expected = expectCommandAndOneSetting(DISPLAY_CMD_CONFIGURE_COM_PINS, pin_setting);
+  LONGS_EQUAL(expected, SSD1306_configureComPin(pin_setting));
+}
 
+TEST(Commands, SetAlternaltePinConfigAndEnableLeftRightRemapping){
+  setting_t pin_setting = 
+    DISPLAY_SETTING_COM_PIN_CONFIG_ALT | DISPLAY_SETTING_COM_PIN_LEFT_RIGHT_REMAP_ON;;
+  int expected = expectCommandAndOneSetting(DISPLAY_CMD_CONFIGURE_COM_PINS, pin_setting);
+  LONGS_EQUAL(expected, SSD1306_configureComPin(pin_setting));
+}
+
+TEST(Commands, InvalidPinConfigReturnsPicoErrorInvaidArg){
+  setting_t pin_setting = 0b110;
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_configureComPin(pin_setting));
+}
