@@ -271,3 +271,16 @@ TEST(Commands, SetEntireDisplayOnIngoreRamContent){
   int expected = expectCommandWithoutSettings(command);
   LONGS_EQUAL(expected, SSD1306_setEntireDisplayOn(true));
 }
+
+TEST(Commands, DoNotInvertDisplayPixels){
+  command_t command = DISPLAY_CMD_INVERT_PIXELS;
+  int expected = expectCommandWithoutSettings(command);
+  LONGS_EQUAL(expected, SSD1306_invertDisplayPixels(false));
+}
+
+TEST(Commands, InvertDisplayPixels){
+  command_t command = DISPLAY_CMD_INVERT_PIXELS | 0x1;
+  int expected = expectCommandWithoutSettings(command);
+  LONGS_EQUAL(expected, SSD1306_invertDisplayPixels(true));
+}
+

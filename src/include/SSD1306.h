@@ -28,6 +28,7 @@
 #define DISPLAY_CMD_SET_COM_OUTPUT_DIR 0xC0
 #define DISPLAY_CMD_CONFIGURE_COM_PINS 0xDA
 #define DISPLAY_CMD_SET_ENTIRE_ON 0xA4
+#define DISPLAY_CMD_INVERT_PIXELS 0xA6
 
 typedef unsigned char command_t;
 typedef unsigned char setting_t;
@@ -49,5 +50,6 @@ int SSD1306_invertRowMapping(bool);
 int SSD1306_configureComPin(setting_t);
 int SSD1306_setContrast(setting_t);
 int SSD1306_setEntireDisplayOn(bool);
+int SSD1306_invertDisplayPixels(bool);
 
 #endif  /* D_SSD1306_H */

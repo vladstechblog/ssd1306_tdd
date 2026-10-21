@@ -123,9 +123,16 @@ int SSD1306_setContrast(setting_t contrast){
 }
 
 int SSD1306_setEntireDisplayOn(bool ignoreRamContent){
-  command_t command = DISPLAY_CMD_SET_ENTIRE_ON;
-  
+  command_t command = DISPLAY_CMD_SET_ENTIRE_ON;  
   if(ignoreRamContent)
+    command |= 0x1;
+
+  return SSD1306_sendSingleByteCommand(command);
+}
+
+int SSD1306_invertDisplayPixels(bool invertPixels){
+  command_t command = DISPLAY_CMD_INVERT_PIXELS; 
+  if(invertPixels)
     command |= 0x1;
 
   return SSD1306_sendSingleByteCommand(command);
