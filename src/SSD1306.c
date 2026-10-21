@@ -121,3 +121,12 @@ int SSD1306_setContrast(setting_t contrast){
     return SSD1306_sendCommandWithOneSetting(DISPLAY_CMD_SET_CONTRAST, contrast);
   return PICO_ERROR_INVALID_ARG;
 }
+
+int SSD1306_setEntireDisplayOn(bool ignoreRamContent){
+  command_t command = DISPLAY_CMD_SET_ENTIRE_ON;
+  
+  if(ignoreRamContent)
+    command |= 0x1;
+
+  return SSD1306_sendSingleByteCommand(command);
+}

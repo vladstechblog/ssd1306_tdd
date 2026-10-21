@@ -259,3 +259,15 @@ TEST(Commands, NegativeContrastThanMaxReturnsPicoErrorInvalidArg){
   setting_t contrast = -1; 
   LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setContrast(contrast));
 }
+
+TEST(Commands, SetEntireDisplayOn){
+  command_t command = DISPLAY_CMD_SET_ENTIRE_ON;
+  int expected = expectCommandWithoutSettings(command);
+  LONGS_EQUAL(expected, SSD1306_setEntireDisplayOn(false));
+}
+
+TEST(Commands, SetEntireDisplayOnIngoreRamContent){
+  command_t command = DISPLAY_CMD_SET_ENTIRE_ON | 0x1;
+  int expected = expectCommandWithoutSettings(command);
+  LONGS_EQUAL(expected, SSD1306_setEntireDisplayOn(true));
+}

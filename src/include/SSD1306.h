@@ -27,6 +27,7 @@
 #define DISPLAY_CMD_SET_SEGMENT_REMAP 0xA0
 #define DISPLAY_CMD_SET_COM_OUTPUT_DIR 0xC0
 #define DISPLAY_CMD_CONFIGURE_COM_PINS 0xDA
+#define DISPLAY_CMD_SET_ENTIRE_ON 0xA4
 
 typedef unsigned char command_t;
 typedef unsigned char setting_t;
@@ -47,5 +48,6 @@ int SSD1306_invertColumnMapping(bool);
 int SSD1306_invertRowMapping(bool);
 int SSD1306_configureComPin(setting_t);
 int SSD1306_setContrast(setting_t);
+int SSD1306_setEntireDisplayOn(bool);
 
 #endif  /* D_SSD1306_H */
