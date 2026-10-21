@@ -68,14 +68,14 @@ int SSD1306_setMultiplexRatio(setting_t ratio_to_set){
 
 
 int SSD1306_setVerticalOffset(setting_t offset_value){
-  if(offset_value >=0 && offset_value <= DISPLAY_MAX_ROWS)
+  if(offset_value >=0 && offset_value <= DISPLAY_ROW_MAX)
     return SSD1306_sendCommandWithOneSetting(DISPLAY_CMD_SET_VERT_OFFSET, offset_value);
   
   return PICO_ERROR_INVALID_ARG;
 }
 
 int SSD1306_setDisplayStartLine(setting_t start_line){
-  if(start_line >=0 && start_line <= DISPLAY_MAX_ROWS)
+  if(start_line >=0 && start_line <= DISPLAY_ROW_MAX)
     return SSD1306_sendSingleByteCommand(DISPLAY_CMD_SET_START_LINE | start_line); 
 
   return PICO_ERROR_INVALID_ARG;

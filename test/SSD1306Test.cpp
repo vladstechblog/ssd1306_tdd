@@ -162,7 +162,7 @@ TEST(Commands, SetVerticalOffset){
 }
 
 TEST(Commands, VerticalOffsetAboveMaximumReturnPicoErrorInvalidArgument){
-  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setVerticalOffset(DISPLAY_MAX_ROWS + 1));
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setVerticalOffset(DISPLAY_ROW_MAX + 1));
 }
 
 TEST(Commands, VerticalOffsetBelowMinimumReturnPicoErrorInvalidArgument){
