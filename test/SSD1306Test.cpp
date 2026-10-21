@@ -57,6 +57,16 @@ TEST_GROUP(Commands){
     return sizeof(command_buffer) + sizeof(setting_one_buffer);
   }
 
+  int expectCommandAndTwoSettings(command_t command, setting_t one, setting_t two){ 
+    command_buffer[1] = command;
+    setting_one_buffer[1] = one;
+    setting_two_buffer[1] = two;
+    record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));
+    record_i2c_write_blocking_expectation(setting_one_buffer, sizeof(setting_one_buffer));
+    record_i2c_write_blocking_expectation(setting_two_buffer, sizeof(setting_two_buffer));
+    return sizeof(command_buffer) + sizeof(setting_one_buffer) + sizeof(setting_two_buffer);
+  }
+
   void setup(){
     clear_buffers();
     SSD1306_Create(fake_i2c_address);
@@ -109,22 +119,11 @@ TEST(Commands, CommandNullByteReturnPicoInvalidArgCode){
 
 TEST(Commands, SendCommandWithTwoSettings){
   command_t command = DISPLAY_CMD_SET_PAGE_ADDR;
-  setting_t setting_one = 1;
-  setting_t setting_two = 10;
-
-  command_t command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, command};
-  setting_t setting_one_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, setting_one};
-  setting_t setting_two_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, setting_two};
-
-  int expected_total_data_sent =
-    sizeof(command_buffer) + sizeof(setting_one_buffer) + sizeof(setting_two_buffer);
-  
-  record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));
-  record_i2c_write_blocking_expectation(setting_one_buffer, sizeof(setting_one_buffer));
-  record_i2c_write_blocking_expectation(setting_two_buffer, sizeof(setting_two_buffer));
-
-  int return_value =  SSD1306_sendCommandWithTwoSettings(command, setting_one, setting_two);
-  LONGS_EQUAL(expected_total_data_sent, return_value); 
+  setting_t one = 1;
+  setting_t two = 10;
+  int expected = expectCommandAndTwoSettings(command, one, two);
+  int return_value =  SSD1306_sendCommandWithTwoSettings(command, one, two);
+  LONGS_EQUAL(expected, return_value); 
 }
 
 TEST(Commands, CommandNullByteReturnPicoInvalidArgCodeForCommandWithTwoSettings){
