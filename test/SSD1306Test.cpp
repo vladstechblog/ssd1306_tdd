@@ -188,3 +188,18 @@ TEST(Commands, StartLineAboveMaximumReturnsPicoErrorInvalidArgument){
 TEST(Commands, StartLineBelowMinimumReturnsPicoErrorInvalidArgument){
   LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setDisplayStartLine(-1));
 }
+
+TEST(Commands, EnbleIvertColumns){
+  command_t command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, DISPLAY_CMD_SET_SEGMENT_REMAP | 1};
+  record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));
+  LONGS_EQUAL(sizeof(command_buffer), SSD1306_invertColumnMapping(true));
+}
+
+TEST(Commands, DisableIvertColumns){
+  command_t command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, DISPLAY_CMD_SET_SEGMENT_REMAP};
+  record_i2c_write_blocking_expectation(command_buffer, sizeof(command_buffer));
+  LONGS_EQUAL(sizeof(command_buffer), SSD1306_invertColumnMapping(false));
+}
+
+
+

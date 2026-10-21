@@ -80,3 +80,11 @@ int SSD1306_setDisplayStartLine(setting_t start_line){
 
   return PICO_ERROR_INVALID_ARG;
 }
+
+int SSD1306_invertColumnMapping(bool invert_columns){
+  unsigned char invert_columns_command = DISPLAY_CMD_SET_SEGMENT_REMAP; 
+  if(invert_columns)
+    invert_columns_command |= 0x1;
+
+  return SSD1306_sendSingleByteCommand(invert_columns_command);
+}

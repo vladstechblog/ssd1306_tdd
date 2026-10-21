@@ -18,6 +18,7 @@
 #define DISPLAY_CMD_SET_MUX_RATIO 0xA8
 #define DISPLAY_CMD_SET_VERT_OFFSET 0xD3
 #define DISPLAY_CMD_SET_START_LINE 0x40
+#define DISPLAY_CMD_SET_SEGMENT_REMAP 0xA0
 
 typedef const unsigned char command_t;
 typedef const unsigned char setting_t;
@@ -34,5 +35,7 @@ int SSD1306_sendDataByte(data_t);
 int SSD1306_setMultiplexRatio(setting_t);
 int SSD1306_setVerticalOffset(setting_t);
 int SSD1306_setDisplayStartLine(setting_t);
+int SSD1306_invertColumnMapping(bool);
+
 
 #endif  /* D_SSD1306_H */
