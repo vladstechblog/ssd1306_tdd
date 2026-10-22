@@ -1,6 +1,12 @@
 include(include_local_cpputest_git_repo.cmake)
 
-add_executable(displayTestRunner displayTestRunner.cpp ../src/SSD1306.c)
+add_executable(
+  displayTestRunner
+  displayTestRunner.cpp
+  ../src/SSD1306.c
+  util_i2c_write_blocking.c
+)
+
 target_include_directories(displayTestRunner PUBLIC include ../src/include)
 target_link_libraries(
   displayTestRunner
