@@ -54,9 +54,29 @@ TEST_GROUP(Initialization){
 };
 
 TEST(Initialization, DefaultInitialization){
-  command_t mux_cmd_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, DISPLAY_CMD_SET_MUX_RATIO};
-  setting_t mux_set_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, DISPLAY_SETTING_DEFAULT_MUX_RATIO};
-  int expected_bytes_sent = expectCommandAndOneSetting(mux_cmd_buffer, mux_set_buffer);
+  int expected_bytes_sent = 0;
+
+  command_t mux_cmd_buffer[] = {
+    DISPLAY_CONTROL_CMD_BYTE,
+    DISPLAY_CMD_SET_MUX_RATIO};
+  
+  setting_t mux_set_buffer[] = {
+    DISPLAY_CONTROL_CMD_BYTE,
+    DISPLAY_SETTING_DEFAULT_MUX_RATIO};
+  
+  expected_bytes_sent = expectCommandAndOneSetting(mux_cmd_buffer, mux_set_buffer);
+
+  command_t disp_offset_cmd_buffer[] = {
+    DISPLAY_CONTROL_CMD_BYTE,
+    DISPLAY_CMD_SET_VERT_OFFSET};
+  
+  setting_t disp_offset_set_buffer[] = {
+    DISPLAY_CONTROL_CMD_BYTE,
+    0};
+
+  expected_bytes_sent += expectCommandAndOneSetting(
+      disp_offset_cmd_buffer,
+      disp_offset_set_buffer);
 
   LONGS_EQUAL(expected_bytes_sent, SSD1306_defaultInitialization());
 }

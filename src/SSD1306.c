@@ -160,5 +160,8 @@ int SSD1306_enableChargePump(void){
 }
 
 int SSD1306_defaultInitialization(void){
-  return SSD1306_setMultiplexRatio(DISPLAY_SETTING_DEFAULT_MUX_RATIO);
+  int bytes_sent = SSD1306_setMultiplexRatio(DISPLAY_SETTING_DEFAULT_MUX_RATIO);
+  bytes_sent += SSD1306_setVerticalOffset(0);
+
+  return bytes_sent;
 }
