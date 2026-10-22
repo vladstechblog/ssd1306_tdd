@@ -78,6 +78,15 @@ TEST(Initialization, DefaultInitialization){
       disp_offset_cmd_buffer,
       disp_offset_set_buffer);
 
+  setting_t start_line = 0;
+  command_t start_line_cmd = DISPLAY_CMD_SET_START_LINE | start_line;
+
+  command_t start_line_cmd_buffer[] = {
+    DISPLAY_CONTROL_CMD_BYTE,
+    start_line_cmd};
+
+  expected_bytes_sent += expectCommandWithoutSettings(start_line_cmd_buffer);
+
   LONGS_EQUAL(expected_bytes_sent, SSD1306_defaultInitialization());
 }
 
