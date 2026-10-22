@@ -1,5 +1,7 @@
 # SSD1306 TDD
 
+**WORK IN PROGRESS... Incomplete...**
+
 This is another example project for practicing Test Driver Development with
 Raspberry Pi Pico C/C++ SDK.
 
