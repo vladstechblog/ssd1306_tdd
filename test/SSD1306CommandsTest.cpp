@@ -98,11 +98,13 @@ TEST(Commands, SendSingleByteCommand){
   LONGS_EQUAL(expected, SSD1306_sendSingleByteCommand(command));
 }
 
+/*
 TEST(Commands, SingleNullByteReturnPicoInvalidArgCode){
   unsigned char expected_command_buffer[2] = { DISPLAY_CONTROL_CMD_BYTE, 0 };
   int return_value = SSD1306_sendSingleByteCommand(0);
   LONGS_EQUAL(PICO_ERROR_INVALID_ARG, return_value);
 }
+*/
 
 TEST(Commands, I2CNullPTRGuardRailForSingleByteCommand){
   SSD1306_Create(0);
@@ -167,8 +169,14 @@ TEST(Commands, SetMutliplexRatioGreaterThanMaximumReturnsPicoInvalidArgument){
   LONGS_EQUAL(PICO_ERROR_INVALID_ARG, return_value);
 }
 
-TEST(Commands, SetVerticalOffset){
+TEST(Commands, SetVerticalOffsetToOne){
   setting_t expected_offset = 1;
+  int expected = expectCommandAndOneSetting(DISPLAY_CMD_SET_VERT_OFFSET,expected_offset);
+   LONGS_EQUAL(expected, SSD1306_setVerticalOffset(expected_offset));
+}
+
+TEST(Commands, SetVerticalOffsetToZero){
+  setting_t expected_offset = 0;
   int expected = expectCommandAndOneSetting(DISPLAY_CMD_SET_VERT_OFFSET,expected_offset);
    LONGS_EQUAL(expected, SSD1306_setVerticalOffset(expected_offset));
 }

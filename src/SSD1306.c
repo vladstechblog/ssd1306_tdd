@@ -15,9 +15,6 @@ int SSD1306_sendSingleByteCommand(command_t command_to_send){
   if (i2c_istance_ptr == NULL)
     return PICO_ERROR_INVALID_ADDRESS;
 
-  if (command_to_send == 0)
-    return PICO_ERROR_INVALID_ARG;
-
   unsigned char command_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, command_to_send};
   return i2c_write_blocking(i2c_istance_ptr, DISPLAY_I2C_ADDRESS, command_buffer, 2, false);
 }
