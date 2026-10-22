@@ -6,13 +6,20 @@ extern "C"
 #include "SSD1306.h"
 #include "CppUTestExt/Mocksupport_c.h"
 
-#include "mock_call_implementations.c"
+int i2c_write_blocking(i2c_inst_t* i2c, uint8_t addr, const uint8_t* src, size_t len, bool nostop){
+  return mock_c()->actualCall("i2c_write_blocking")
+    ->withPointerParameters("i2c_instance", i2c)
+    ->withUnsignedIntParameters("i2c_addr", addr)
+    ->withMemoryBufferParameter("src_buffer", (unsigned char*)src, len)
+    ->withUnsignedIntParameters("buff_size", len)
+    ->withBoolParameters("nostop", nostop)
+    ->returnValue().value.intValue;
+}
 
 }//ennd extern "C"
 
 #include "CppUTest/TestHarness.h"
 #include "CppUTestExt/Mocksupport.h"
-#include "util_record_expectations.c"
 
 #define I2C_CHUNK_SIZE 2
 
@@ -47,6 +54,16 @@ TEST_GROUP(Commands){
     clear_i2c_command_bytes(command_buffer);
     clear_i2c_command_bytes(setting_one_buffer);
     clear_i2c_command_bytes(setting_two_buffer);
+  }
+
+  void record_i2c_write_blocking_expectation(const unsigned char* data, size_t length){
+    mock().expectOneCall("i2c_write_blocking")
+      .withPointerParameter("i2c_instance", fake_i2c_address)
+      .withUnsignedIntParameter("i2c_addr", DISPLAY_I2C_ADDRESS)
+      .withMemoryBufferParameter("src_buffer", data, length)
+      .withUnsignedIntParameter("buff_size", length)
+      .withBoolParameter("nostop", false)
+      .andReturnValue(length);
   }
 
   int expectCommandWithoutSettings(command_t command){ 
