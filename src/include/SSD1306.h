@@ -19,6 +19,7 @@
 #define DISPLAY_SETTING_MAX_CONTRAST 0x7F
 #define DISPLAY_SETTING_DEFAULT_FREQ_AND_DIVIDER_RATIO 0x40
 #define DISPLAY_SETTING_ENABLE_CHARGE_PUMP 0x14
+#define DISPLAY_SETTING_DEFAULT_MUX_RATIO 0x3F
 
 #define DISPLAY_CMD_POWER_ON 0xAF
 #define DISPLAY_CMD_POWER_OFF 0xAE
@@ -60,6 +61,6 @@ int SSD1306_setDefaultFreqAndDividerRatio(void);
 int SSD1306_displayPowerOff(void);
 int SSD1306_displayPowerOn(void);
 int SSD1306_enableChargePump(void);
-
+int SSD1306_defaultInitialization(void);
 
 #endif  /* D_SSD1306_H */
