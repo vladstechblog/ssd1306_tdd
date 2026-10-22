@@ -290,3 +290,24 @@ TEST(Commands, SetDefaultOscillatorFrequencyAndDividerRatio){
   int expected = expectCommandAndOneSetting(command, setting);
   LONGS_EQUAL(expected, SSD1306_setDefaultFreqAndDividerRatio());
 }
+
+TEST(Commands, DisplayPowerOff){
+  command_t power_off = DISPLAY_CMD_POWER_OFF;
+  int expected = expectCommandWithoutSettings(power_off);
+  LONGS_EQUAL(expected, SSD1306_displayPowerOff());
+}
+
+TEST(Commands, DisplayPowerOn){
+  command_t power_on = DISPLAY_CMD_POWER_ON;
+  int expected = expectCommandWithoutSettings(power_on);
+  LONGS_EQUAL(expected, SSD1306_displayPowerOn());
+}
+
+TEST(Commands, EnableChargePump){
+  command_t charge_pump_command = DISPLAY_CMD_CHARGE_PUMP_SETTINGS;
+  setting_t charge_pump_setting = DISPLAY_SETTING_ENABLE_CHARGE_PUMP;
+  command_t second_buffer[] = {DISPLAY_CONTROL_CMD_BYTE, DISPLAY_CMD_POWER_ON}; 
+  int expected_first_part = expectCommandAndOneSetting(charge_pump_command, charge_pump_setting);
+  record_i2c_write_blocking_expectation(second_buffer, sizeof(second_buffer));
+  LONGS_EQUAL(expected_first_part + sizeof(second_buffer), SSD1306_enableChargePump());
+}

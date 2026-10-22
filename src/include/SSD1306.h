@@ -18,8 +18,10 @@
 #define DISPLAY_SETTING_COM_PIN_LEFT_RIGHT_REMAP_ON 0x22
 #define DISPLAY_SETTING_MAX_CONTRAST 0x7F
 #define DISPLAY_SETTING_DEFAULT_FREQ_AND_DIVIDER_RATIO 0x40
+#define DISPLAY_SETTING_ENABLE_CHARGE_PUMP 0x14
 
 #define DISPLAY_CMD_POWER_ON 0xAF
+#define DISPLAY_CMD_POWER_OFF 0xAE
 #define DISPLAY_CMD_SET_CONTRAST 0x7F
 #define DISPLAY_CMD_SET_PAGE_ADDR 0x22
 #define DISPLAY_CMD_SET_MUX_RATIO 0xA8
@@ -31,6 +33,7 @@
 #define DISPLAY_CMD_SET_ENTIRE_ON 0xA4
 #define DISPLAY_CMD_INVERT_PIXELS 0xA6
 #define DISPLAY_CMD_CONFIGURE_OSCILLATOR 0xD5
+#define DISPLAY_CMD_CHARGE_PUMP_SETTINGS 0x8D
 
 typedef unsigned char command_t;
 typedef unsigned char setting_t;
@@ -54,5 +57,9 @@ int SSD1306_setContrast(setting_t);
 int SSD1306_setEntireDisplayOn(bool);
 int SSD1306_invertDisplayPixels(bool);
 int SSD1306_setDefaultFreqAndDividerRatio(void);
+int SSD1306_displayPowerOff(void);
+int SSD1306_displayPowerOn(void);
+int SSD1306_enableChargePump(void);
+
 
 #endif  /* D_SSD1306_H */

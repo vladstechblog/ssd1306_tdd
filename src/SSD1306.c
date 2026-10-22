@@ -144,3 +144,20 @@ int SSD1306_setDefaultFreqAndDividerRatio(void){
     DISPLAY_SETTING_DEFAULT_FREQ_AND_DIVIDER_RATIO
   );
 }
+
+int SSD1306_displayPowerOff(void){
+  return SSD1306_sendSingleByteCommand(DISPLAY_CMD_POWER_OFF);
+}
+
+int SSD1306_displayPowerOn(void){
+  return SSD1306_sendSingleByteCommand(DISPLAY_CMD_POWER_ON);
+}
+
+int SSD1306_enableChargePump(void){
+  int bytes_sent = SSD1306_sendCommandWithOneSetting(
+    DISPLAY_CMD_CHARGE_PUMP_SETTINGS,
+    DISPLAY_SETTING_ENABLE_CHARGE_PUMP
+  );
+  bytes_sent += SSD1306_sendSingleByteCommand(DISPLAY_CMD_POWER_ON);
+  return bytes_sent;
+}
