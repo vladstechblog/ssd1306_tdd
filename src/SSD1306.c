@@ -163,6 +163,7 @@ int SSD1306_defaultInitialization(void){
   int bytes_sent = SSD1306_setMultiplexRatio(DISPLAY_SETTING_DEFAULT_MUX_RATIO);
   bytes_sent += SSD1306_setVerticalOffset(0);
   bytes_sent += SSD1306_setDisplayStartLine(0);
+  bytes_sent += SSD1306_invertColumnMapping(false);
 
   return bytes_sent;
 }
