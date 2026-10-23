@@ -170,6 +170,7 @@ int SSD1306_defaultInitialization(void){
   bytes_sent += SSD1306_setEntireDisplayOn(false);
   bytes_sent += SSD1306_invertDisplayPixels(false);
   bytes_sent += SSD1306_setDefaultFreqAndDividerRatio();
+  bytes_sent += SSD1306_enableChargePump();
 
   return bytes_sent;
 }

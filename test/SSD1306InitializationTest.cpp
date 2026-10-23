@@ -141,7 +141,7 @@ TEST(Initialization, DefaultInitialization){
 
   expected_bytes_sent += expectCommandWithoutSettings(invert_pixels_cmd_buffer);
 
-   command_t osc_freq_cmd_buffer[] ={
+  command_t osc_freq_cmd_buffer[] ={
     DISPLAY_CONTROL_CMD_BYTE,
     DISPLAY_CMD_CONFIGURE_OSCILLATOR
   };
@@ -151,9 +151,28 @@ TEST(Initialization, DefaultInitialization){
     DISPLAY_SETTING_DEFAULT_FREQ_AND_DIVIDER_RATIO
   };
 
-
   expected_bytes_sent += expectCommandAndOneSetting(
     osc_freq_cmd_buffer, osc_freq_set_buffer);
+
+  command_t charge_pump_cmd_buffer[] ={
+    DISPLAY_CONTROL_CMD_BYTE,
+    DISPLAY_CMD_CHARGE_PUMP_SETTINGS
+  };
+
+  setting_t charge_pump_set_buffer[] = {
+    DISPLAY_CONTROL_CMD_BYTE,
+    DISPLAY_SETTING_ENABLE_CHARGE_PUMP 
+  };
+
+  expected_bytes_sent += expectCommandAndOneSetting(
+    charge_pump_cmd_buffer, charge_pump_set_buffer);
+
+  command_t display_on_cmd_buffer[] = {
+    DISPLAY_CONTROL_CMD_BYTE,
+    DISPLAY_CMD_POWER_ON
+  };
+
+  expected_bytes_sent += expectCommandWithoutSettings(display_on_cmd_buffer);
 
   LONGS_EQUAL(expected_bytes_sent, SSD1306_defaultInitialization());
 }
