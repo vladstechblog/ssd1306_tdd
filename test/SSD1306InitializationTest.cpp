@@ -141,6 +141,19 @@ TEST(Initialization, DefaultInitialization){
 
   expected_bytes_sent += expectCommandWithoutSettings(invert_pixels_cmd_buffer);
 
+   command_t osc_freq_cmd_buffer[] ={
+    DISPLAY_CONTROL_CMD_BYTE,
+    DISPLAY_CMD_CONFIGURE_OSCILLATOR
+  };
+
+  setting_t osc_freq_set_buffer[] = {
+    DISPLAY_CONTROL_CMD_BYTE,
+    DISPLAY_SETTING_DEFAULT_FREQ_AND_DIVIDER_RATIO
+  };
+
+
+  expected_bytes_sent += expectCommandAndOneSetting(
+    osc_freq_cmd_buffer, osc_freq_set_buffer);
 
   LONGS_EQUAL(expected_bytes_sent, SSD1306_defaultInitialization());
 }
