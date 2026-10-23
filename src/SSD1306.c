@@ -193,4 +193,10 @@ int SSD1306_setAddressModeToPage(void){
     DISPLAY_SETTING_ADDR_MODE_PAGE);
 }
 
-
+int SSD1306_setPageStartAddress(setting_t start_address){
+  if(start_address >= DISPLAY_PAGE_MIN  && start_address <= DISPLAY_PAGE_MAX){
+    command_t command = DISPLAY_CMD_SET_PAGE_START_ADDR | start_address;
+    return SSD1306_sendSingleByteCommand(command);
+  }
+  return PICO_ERROR_INVALID_ARG;
+}

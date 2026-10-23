@@ -347,3 +347,22 @@ TEST(Commands, SetMemoryAddressingModePage){
   int expected = expectCommandAndOneSetting(command, setting);
   LONGS_EQUAL(expected, SSD1306_setAddressModeToPage());
 }
+
+TEST(Commands, SetPageSartAddress){
+  setting_t page_address = 2;
+  command_t command = DISPLAY_CMD_SET_PAGE_START_ADDR | page_address;
+  int expected = expectCommandWithoutSettings(command);
+  LONGS_EQUAL(expected, SSD1306_setPageStartAddress(page_address));
+}
+
+TEST(Commands, SetPageSartGreaterThanMaxReturnsPicoErrorInvalidArgument){
+  setting_t address = DISPLAY_PAGE_MAX + 1;
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setPageStartAddress(address));
+}
+
+TEST(Commands, SetPageSartLessThanMinReturnsPicoErrorInvalidArgument){
+  setting_t address = -1;
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setPageStartAddress(address));
+}
+
+
