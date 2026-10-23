@@ -365,4 +365,30 @@ TEST(Commands, SetPageSartLessThanMinReturnsPicoErrorInvalidArgument){
   LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setPageStartAddress(address));
 }
 
+TEST(Commands, SetPageAddressRange){
+  setting_t start = 2;
+  setting_t end = 5; 
+  command_t command = DISPLAY_CMD_SET_PAGE_RANGE;
+  int expected = expectCommandAndTwoSettings(command, start, end);
+  LONGS_EQUAL(expected, SSD1306_setPageRange(start, end));
+}
 
+TEST(Commands, SetPageRangeEndGreaterThanMaxReturnsPicoErrorInvalidArgument){
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setPageRange(0, DISPLAY_PAGE_MAX +1));
+}
+
+TEST(Commands, SetPageRangeEndLessThanMinPicoErrorInvalidArgument){
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setPageRange(0, DISPLAY_PAGE_MIN - 1));
+}
+
+TEST(Commands, SetPageRangeStartGreaterThanMaxPicoErrorInvalidArgument){
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setPageRange(DISPLAY_PAGE_MAX + 1, 2));
+}
+
+TEST(Commands, SetPageRangeStartLessThanMinPicoErrorInvalidArgument){
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setPageRange(DISPLAY_PAGE_MIN - 1, 2));
+}
+
+TEST(Commands, SetPageRangeStartGreaterThanEndReturnsPicoErrorInvalidArgument){
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setPageRange(3, 2));
+}

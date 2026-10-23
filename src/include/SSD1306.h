@@ -42,6 +42,7 @@
 #define DISPLAY_CMD_CHARGE_PUMP_SETTINGS 0x8D
 #define DISPLAY_CMD_SET_MEMORY_ADDRESSING_MODE 0x20
 #define DISPLAY_CMD_SET_PAGE_START_ADDR 0xB0
+#define DISPLAY_CMD_SET_PAGE_RANGE 0x22
 
 typedef unsigned char command_t;
 typedef unsigned char setting_t;
@@ -73,5 +74,6 @@ int SSD1306_setAddressModeToHorizontal(void);
 int SSD1306_setAddressModeToVertical(void);
 int SSD1306_setAddressModeToPage(void);
 int SSD1306_setPageStartAddress(setting_t);
+int SSD1306_setPageRange(setting_t start, setting_t end);
 
 #endif  /* D_SSD1306_H */

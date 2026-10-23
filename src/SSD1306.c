@@ -193,10 +193,27 @@ int SSD1306_setAddressModeToPage(void){
     DISPLAY_SETTING_ADDR_MODE_PAGE);
 }
 
+static bool page_is_within_range(setting_t page){
+  if(page >= DISPLAY_PAGE_MIN && page <= DISPLAY_PAGE_MAX)
+   return true;
+  
+  return false;
+}
+
 int SSD1306_setPageStartAddress(setting_t start_address){
-  if(start_address >= DISPLAY_PAGE_MIN  && start_address <= DISPLAY_PAGE_MAX){
+  if(page_is_within_range(start_address)){
     command_t command = DISPLAY_CMD_SET_PAGE_START_ADDR | start_address;
     return SSD1306_sendSingleByteCommand(command);
   }
   return PICO_ERROR_INVALID_ARG;
+}
+
+int SSD1306_setPageRange(setting_t start, setting_t end){
+  if(!page_is_within_range(start) || !page_is_within_range(end))
+    return PICO_ERROR_INVALID_ARG;
+
+  if(start > end)
+    return PICO_ERROR_INVALID_ARG;
+
+  return SSD1306_sendCommandWithTwoSettings(DISPLAY_CMD_SET_PAGE_RANGE, start, end);
 }
