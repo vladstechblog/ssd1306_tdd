@@ -164,6 +164,7 @@ int SSD1306_defaultInitialization(void){
   bytes_sent += SSD1306_setVerticalOffset(0);
   bytes_sent += SSD1306_setDisplayStartLine(0);
   bytes_sent += SSD1306_invertColumnMapping(false);
+  bytes_sent += SSD1306_invertRowMapping(false);
 
   return bytes_sent;
 }

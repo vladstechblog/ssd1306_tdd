@@ -94,6 +94,14 @@ TEST(Initialization, DefaultInitialization){
   
   expected_bytes_sent += expectCommandWithoutSettings(invert_columns_cmd_buffer);
 
+  command_t invert_rows_cmd_buffer[] = {
+    DISPLAY_CONTROL_CMD_BYTE,
+    DISPLAY_CMD_SET_COM_OUTPUT_DIR
+  };
+  
+  expected_bytes_sent += expectCommandWithoutSettings(invert_rows_cmd_buffer);
+
+
   LONGS_EQUAL(expected_bytes_sent, SSD1306_defaultInitialization());
 }
 
