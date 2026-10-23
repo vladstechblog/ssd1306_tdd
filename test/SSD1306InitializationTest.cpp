@@ -101,6 +101,18 @@ TEST(Initialization, DefaultInitialization){
   
   expected_bytes_sent += expectCommandWithoutSettings(invert_rows_cmd_buffer);
 
+  command_t pin_config_cmd_buffer[] {
+    DISPLAY_CONTROL_CMD_BYTE,
+    DISPLAY_CMD_CONFIGURE_COM_PINS,
+  };
+  
+  command_t pin_config_set_buffer[] = {
+    DISPLAY_CONTROL_CMD_BYTE,
+    DISPLAY_SETTING_COM_PIN_CONFIG_SEQ
+  };
+
+  expected_bytes_sent += expectCommandAndOneSetting(
+      pin_config_cmd_buffer,pin_config_set_buffer);
 
   LONGS_EQUAL(expected_bytes_sent, SSD1306_defaultInitialization());
 }
