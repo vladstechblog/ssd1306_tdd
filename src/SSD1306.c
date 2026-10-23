@@ -166,7 +166,7 @@ int SSD1306_defaultInitialization(void){
   bytes_sent += SSD1306_invertColumnMapping(false);
   bytes_sent += SSD1306_invertRowMapping(false);
   bytes_sent += SSD1306_configureComPin(DISPLAY_SETTING_COM_PIN_CONFIG_SEQ);
-
+  bytes_sent += SSD1306_setContrast(DISPLAY_SETTING_MAX_CONTRAST);
 
   return bytes_sent;
 }
