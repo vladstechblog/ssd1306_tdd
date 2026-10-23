@@ -13,6 +13,8 @@
 #define DISPLAY_START_LINE_MAX 0x7F //per datasheet
 #define DISPLAY_PAGE_MIN 0
 #define DISPLAY_PAGE_MAX 7
+#define DISPLAY_COL_MIN 0
+#define DISPLAY_COL_MAX (DISPLAY_WIDTH - 1)
 
 #define DISPLAY_SETTING_FLIP_ROWS 0x8
 #define DISPLAY_SETTING_COM_PIN_CONFIG_SEQ 0x2
@@ -43,6 +45,7 @@
 #define DISPLAY_CMD_SET_MEMORY_ADDRESSING_MODE 0x20
 #define DISPLAY_CMD_SET_PAGE_START_ADDR 0xB0
 #define DISPLAY_CMD_SET_PAGE_RANGE 0x22
+#define DISPLAY_CMD_SET_COLUMN_RANGE 0x21
 
 typedef unsigned char command_t;
 typedef unsigned char setting_t;
@@ -75,5 +78,6 @@ int SSD1306_setAddressModeToVertical(void);
 int SSD1306_setAddressModeToPage(void);
 int SSD1306_setPageStartAddress(setting_t);
 int SSD1306_setPageRange(setting_t start, setting_t end);
+int SSD1306_setColumnRange(setting_t start, setting_t end);
 
 #endif  /* D_SSD1306_H */

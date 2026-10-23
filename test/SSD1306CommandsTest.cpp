@@ -392,3 +392,31 @@ TEST(Commands, SetPageRangeStartLessThanMinPicoErrorInvalidArgument){
 TEST(Commands, SetPageRangeStartGreaterThanEndReturnsPicoErrorInvalidArgument){
   LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setPageRange(3, 2));
 }
+
+TEST(Commands, SetColumnAddressRange){
+  setting_t start = 20;
+  setting_t end = 25; 
+  command_t command = DISPLAY_CMD_SET_COLUMN_RANGE;
+  int expected = expectCommandAndTwoSettings(command, start, end);
+  LONGS_EQUAL(expected, SSD1306_setColumnRange(start, end));
+}
+
+TEST(Commands, SetColumnRangeEndGreaterThanMaxReturnsPicoErrorInvalidArgument){
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setColumnRange(0, DISPLAY_COL_MAX +1));
+}
+
+TEST(Commands, SetColumnRangeEndLessThanMinPicoErrorInvalidArgument){
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setColumnRange(0, DISPLAY_COL_MIN - 1));
+}
+
+TEST(Commands, SetColumnRangeStartGreaterThanMaxPicoErrorInvalidArgument){
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setColumnRange(DISPLAY_COL_MAX + 1, 2));
+}
+
+TEST(Commands, SetColumnRangeStartLessThanMinPicoErrorInvalidArgument){
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setColumnRange(DISPLAY_COL_MIN - 1, 2));
+}
+
+TEST(Commands, SetColumnRangeStartGreaterThanEndReturnsPicoErrorInvalidArgument){
+  LONGS_EQUAL(PICO_ERROR_INVALID_ARG, SSD1306_setColumnRange(3, 2));
+}

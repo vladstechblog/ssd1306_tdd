@@ -217,3 +217,20 @@ int SSD1306_setPageRange(setting_t start, setting_t end){
 
   return SSD1306_sendCommandWithTwoSettings(DISPLAY_CMD_SET_PAGE_RANGE, start, end);
 }
+
+static bool column_is_within_range(setting_t column){
+  if(column >= DISPLAY_COL_MIN && column <= DISPLAY_COL_MAX)
+   return true;
+  
+  return false;
+}
+
+int SSD1306_setColumnRange(setting_t start, setting_t end){
+  if(!column_is_within_range(start) || !column_is_within_range(end))
+    return PICO_ERROR_INVALID_ARG;
+  
+  if(start > end)
+    return PICO_ERROR_INVALID_ARG;
+
+  return SSD1306_sendCommandWithTwoSettings(DISPLAY_CMD_SET_COLUMN_RANGE, start, end);
+}
