@@ -127,6 +127,14 @@ TEST(Initialization, DefaultInitialization){
   expected_bytes_sent += expectCommandAndOneSetting(
       contrast_cmd_buffer, contrast_set_buffer);
 
+  command_t set_entire_on_cmd_buffer[] = {
+    DISPLAY_CONTROL_CMD_BYTE,
+    DISPLAY_CMD_SET_ENTIRE_ON
+  };
+
+  expected_bytes_sent += expectCommandWithoutSettings(set_entire_on_cmd_buffer);
+
+
   LONGS_EQUAL(expected_bytes_sent, SSD1306_defaultInitialization());
 }
 
