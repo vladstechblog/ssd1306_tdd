@@ -105,10 +105,10 @@ TEST(Initialization, DefaultInitialization){
     DISPLAY_CONTROL_CMD_BYTE,
     DISPLAY_CMD_CONFIGURE_COM_PINS,
   };
-  
+ 
   setting_t pin_config_set_buffer[] = {
     DISPLAY_CONTROL_CMD_BYTE,
-    DISPLAY_SETTING_COM_PIN_CONFIG_SEQ
+    DISPLAY_SETTING_COM_PIN_CONFIG_ALT
   };
 
   expected_bytes_sent += expectCommandAndOneSetting(
