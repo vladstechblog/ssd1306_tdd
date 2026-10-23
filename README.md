@@ -2,6 +2,9 @@
 
 **WORK IN PROGRESS... Incomplete...**
 
+Designed for 128x64 models.
+
+
 This is another example project for practicing Test Driver Development with
 Raspberry Pi Pico C/C++ SDK.
 
