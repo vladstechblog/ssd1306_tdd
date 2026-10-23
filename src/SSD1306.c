@@ -174,3 +174,23 @@ int SSD1306_defaultInitialization(void){
 
   return bytes_sent;
 }
+
+int SSD1306_setAddressModeToHorizontal(void){
+  return SSD1306_sendCommandWithOneSetting(
+    DISPLAY_CMD_SET_MEMORY_ADDRESSING_MODE,
+    DISPLAY_SETTING_ADDR_MODE_HORIZONTAL);
+}
+
+int SSD1306_setAddressModeToVertical(void){
+  return SSD1306_sendCommandWithOneSetting(
+    DISPLAY_CMD_SET_MEMORY_ADDRESSING_MODE,
+    DISPLAY_SETTING_ADDR_MODE_VERTICAL);
+}
+
+int SSD1306_setAddressModeToPage(void){
+  return SSD1306_sendCommandWithOneSetting(
+    DISPLAY_CMD_SET_MEMORY_ADDRESSING_MODE,
+    DISPLAY_SETTING_ADDR_MODE_PAGE);
+}
+
+

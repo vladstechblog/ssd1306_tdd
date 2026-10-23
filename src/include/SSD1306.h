@@ -20,6 +20,9 @@
 #define DISPLAY_SETTING_DEFAULT_FREQ_AND_DIVIDER_RATIO 0x40
 #define DISPLAY_SETTING_ENABLE_CHARGE_PUMP 0x14
 #define DISPLAY_SETTING_DEFAULT_MUX_RATIO 0x3F
+#define DISPLAY_SETTING_ADDR_MODE_HORIZONTAL 0x0
+#define DISPLAY_SETTING_ADDR_MODE_VERTICAL 0x1
+#define DISPLAY_SETTING_ADDR_MODE_PAGE 0x2
 
 #define DISPLAY_CMD_POWER_ON 0xAF
 #define DISPLAY_CMD_POWER_OFF 0xAE
@@ -35,6 +38,7 @@
 #define DISPLAY_CMD_INVERT_PIXELS 0xA6
 #define DISPLAY_CMD_CONFIGURE_OSCILLATOR 0xD5
 #define DISPLAY_CMD_CHARGE_PUMP_SETTINGS 0x8D
+#define DISPLAY_CMD_SET_MEMORY_ADDRESSING_MODE 0x20
 
 typedef unsigned char command_t;
 typedef unsigned char setting_t;
@@ -62,5 +66,8 @@ int SSD1306_displayPowerOff(void);
 int SSD1306_displayPowerOn(void);
 int SSD1306_enableChargePump(void);
 int SSD1306_defaultInitialization(void);
+int SSD1306_setAddressModeToHorizontal(void);
+int SSD1306_setAddressModeToVertical(void);
+int SSD1306_setAddressModeToPage(void);
 
 #endif  /* D_SSD1306_H */

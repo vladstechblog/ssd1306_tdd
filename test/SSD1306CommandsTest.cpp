@@ -326,3 +326,24 @@ TEST(Commands, EnableChargePump){
   record_i2c_write_blocking_expectation(second_buffer, sizeof(second_buffer));
   LONGS_EQUAL(expected_first_part + sizeof(second_buffer), SSD1306_enableChargePump());
 }
+
+TEST(Commands, SetMemoryAddressingModeHorizontal){
+  command_t command = DISPLAY_CMD_SET_MEMORY_ADDRESSING_MODE;
+  setting_t setting = DISPLAY_SETTING_ADDR_MODE_HORIZONTAL; 
+  int expected = expectCommandAndOneSetting(command, setting);
+  LONGS_EQUAL(expected, SSD1306_setAddressModeToHorizontal());
+}
+
+TEST(Commands, SetMemoryAddressingModeVertical){
+  command_t command = DISPLAY_CMD_SET_MEMORY_ADDRESSING_MODE;
+  setting_t setting = DISPLAY_SETTING_ADDR_MODE_VERTICAL; 
+  int expected = expectCommandAndOneSetting(command, setting);
+  LONGS_EQUAL(expected, SSD1306_setAddressModeToVertical());
+}
+
+TEST(Commands, SetMemoryAddressingModePage){
+  command_t command = DISPLAY_CMD_SET_MEMORY_ADDRESSING_MODE;
+  setting_t setting = DISPLAY_SETTING_ADDR_MODE_PAGE; 
+  int expected = expectCommandAndOneSetting(command, setting);
+  LONGS_EQUAL(expected, SSD1306_setAddressModeToPage());
+}
