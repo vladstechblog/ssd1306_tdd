@@ -134,6 +134,13 @@ TEST(Initialization, DefaultInitialization){
 
   expected_bytes_sent += expectCommandWithoutSettings(set_entire_on_cmd_buffer);
 
+  command_t invert_pixels_cmd_buffer[] = {
+    DISPLAY_CONTROL_CMD_BYTE,
+    DISPLAY_CMD_INVERT_PIXELS
+  };
+
+  expected_bytes_sent += expectCommandWithoutSettings(invert_pixels_cmd_buffer);
+
 
   LONGS_EQUAL(expected_bytes_sent, SSD1306_defaultInitialization());
 }

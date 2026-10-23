@@ -168,6 +168,8 @@ int SSD1306_defaultInitialization(void){
   bytes_sent += SSD1306_configureComPin(DISPLAY_SETTING_COM_PIN_CONFIG_SEQ);
   bytes_sent += SSD1306_setContrast(DISPLAY_SETTING_MAX_CONTRAST);
   bytes_sent += SSD1306_setEntireDisplayOn(false);
+  bytes_sent += SSD1306_invertDisplayPixels(false);
+
 
   return bytes_sent;
 }
